@@ -41,6 +41,7 @@ class Article
     private $content;
 
     /**
+     * @Expose
      * @ORM\ManyToOne(targetEntity="Author", cascade={"all"}, fetch="EAGER")
      */
     private $author;
