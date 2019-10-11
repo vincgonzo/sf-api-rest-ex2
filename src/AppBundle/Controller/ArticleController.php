@@ -44,6 +44,7 @@ class ArticleController extends FOSRestController
      */
     public function listAction(ParamFetcherInterface $paramFetcher)
     {
+        
         $pager = $this->getDoctrine()->getRepository('AppBundle:Article')->search(
             $paramFetcher->get('keyword'),
             $paramFetcher->get('order'),
@@ -68,7 +69,7 @@ class ArticleController extends FOSRestController
     }
 
     /**
-     * @Rest\Post("/articles")
+     * @Rest\Post("/article")
      * @Rest\View(StatusCode = 201)
      * @ParamConverter("article", converter="fos_rest.request_body")
      */

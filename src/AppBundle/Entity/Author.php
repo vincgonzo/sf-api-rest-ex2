@@ -3,11 +3,12 @@
 namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use JMS\Serializer\Annotation as Serializer;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\AuthorRepository")
  * @ORM\Table()
  *
  * @Serializer\ExclusionPolicy("ALL")
@@ -25,6 +26,7 @@ class Author
     /**
      * @ORM\Column(type="string")
      *
+     * @Assert\NotBlank
      * @Serializer\Expose
      */
     private $fullname;
@@ -32,6 +34,7 @@ class Author
     /**
      * @ORM\Column(type="text")
      *
+     * @Assert\NotBlank
      * @Serializer\Expose
      */
     private $biography;
