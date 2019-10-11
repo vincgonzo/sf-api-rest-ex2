@@ -81,14 +81,7 @@ class ArticleController extends FOSRestController
      */
     public function updateAction($post_id, Article $article, ConstraintViolationList $violations)
     {
-        if (count($violations)) {
-            $message = 'The JSON sent contains invalid data. Here are the errors you need to correct: ';
-            foreach ($violations as $violation) {
-                $message .= sprintf("Field %s: %s ", $violation->getPropertyPath(), $violation->getMessage());
-            }
-            
-            throw new ResourceValidationException($message);
-        }
+        $this->container->get('app.violation_messanger')->messageDisplay($violations);
         
         $repo = $this->getDoctrine()->getRepository('AppBundle:Article')->find($post_id);
         $repo->setTitle($article->getTitle());
@@ -129,17 +122,9 @@ class ArticleController extends FOSRestController
      */
     public function createAction(Article $article, ConstraintViolationList $violations)
     {
-        if (count($violations)) {
-            $message = 'The JSON sent contains invalid data. Here are the errors you need to correct: ';
-            foreach ($violations as $violation) {
-                $message .= sprintf("Field %s: %s ", $violation->getPropertyPath(), $violation->getMessage());
-            }
-
-            throw new ResourceValidationException($message);
-        }
+        $this->container->get('app.violation_messanger')->messageDisplay($violations);
 
         $em = $this->getDoctrine()->getManager();
-
         $em->persist($article);
         $em->flush();
 

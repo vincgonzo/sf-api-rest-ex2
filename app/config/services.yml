@@ -6,6 +6,11 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
+    app.violation_messanger:
+        class: AppBundle\Service\ConstraintViolationMessanger
+        tags:
+            - { name: app.violation_messanger}
+
     app.normalizer.resource_validation_exception:
         class: AppBundle\Normalizer\NotFoundHttpExceptionNormalizer
         arguments:
