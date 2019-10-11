@@ -73,8 +73,13 @@ class AuthorController extends FOSRestController
      * @Rest\View(StatusCode = 201)
      * @ParamConverter("author", converter="fos_rest.request_body")
      */
-    public function createAction(Author $author)
+    public function createAction(Author $author, ConstraintViolationList $violations)
     {
+        if(count($violations))
+        {
+            return $this->view($violations, Response::HTTP_BAD_REQUEST);
+        }
+
         $em = $this->getDoctrine()->getManager();
 
         $em->persist($author);
