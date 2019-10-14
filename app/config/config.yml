@@ -107,3 +107,6 @@ csa_guzzle:
         weather:
             config:
                 base_uri: http://api.openweathermap.org
+        github_api:
+            config:
+                base_url: https://api.github.com

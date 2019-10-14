@@ -16,6 +16,10 @@ use Hateoas\Configuration\Annotation as Hateoas;
  * @ExclusionPolicy("all")
  * 
  * @Hateoas\Relation(
+ *     "authenticated_user",
+ *     embedded = @Hateoas\Embedded("expr(service('security.token_storage').getToken().getUser())")
+ * )
+ * @Hateoas\Relation(
  *      "self",
  *      href = @Hateoas\Route(
  *          "app_article_show",
