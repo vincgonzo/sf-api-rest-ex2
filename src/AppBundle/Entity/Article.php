@@ -58,6 +58,7 @@ class Article
     /**
      * @ORM\Column(type="string", length=100)
      * @Expose
+     * @Serializer\Since("1.0")
      * @Assert\NotBlank()
      */
     private $title;
@@ -65,9 +66,17 @@ class Article
     /**
      * @ORM\Column(type="text")
      * @Expose
+     * @Serializer\Since("1.0")
      * @Assert\NotBlank()
      */
     private $content;
+
+    /**
+     * @ORM\Column(type="text", nullable=true)
+     * @Expose
+     * @Serializer\Since("2.0")
+     */
+    private $shortDescription;
 
     /**
      * @ORM\ManyToOne(targetEntity="Author", cascade={"all"}, fetch="EAGER")
