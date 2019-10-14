@@ -17,3 +17,9 @@ services:
             - { type: 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException'  }
         tags:
             - { name: app.normalizer }
+    app.weather:
+        class: AppBundle\Service\ExternalAPI\Weather
+        arguments:
+            - '@csa_guzzle.client.weather'
+            - '@jms_serializer'
+            - %weather_api_key%

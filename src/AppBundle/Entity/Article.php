@@ -43,6 +43,10 @@ use Hateoas\Configuration\Annotation as Hateoas;
  *     "author",
  *     embedded = @Hateoas\Embedded("expr(object.getAuthor())")
  * )
+ * @Hateoas\Relation(
+ *     "weather",
+ *     embedded = @Hateoas\Embedded("expr(service('app.weather').getCurrent('Tournai'))")
+ * )
  *
  */
 class Article

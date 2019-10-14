@@ -101,3 +101,9 @@ fos_rest:
     view:
         mime_types:
             json: ['application/json', 'application/json;version=1.0', 'application/json;version=2.0']
+
+csa_guzzle:
+    clients:
+        weather:
+            config:
+                base_uri: http://api.openweathermap.org
