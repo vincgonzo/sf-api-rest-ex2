@@ -78,27 +78,30 @@ class ArticleController extends FOSRestController
     }
 
     /**
-     * @Rest\Post(
-     *     "/article/update/{post_id}",
+     * @Rest\Put(
+     *     "/article/{id}/update/",
      *     name = "app_article_update",
-     *     requirements={"post_id" = "\d+"}
+     *     requirements={"id" = "\d+"}
      * )
      * @ParamConverter("article", converter="fos_rest.request_body")
      * @Rest\View(statusCode=201)
      */
-    public function updateAction($post_id, Article $article, ConstraintViolationList $violations)
+    public function updateAction($id, Article $article, ConstraintViolationList $violations)
     {
         $this->container->get('app.violation_messanger')->messageDisplay($violations);
+        $repo = $this->getDoctrine()->getRepository('AppBundle:Article')->find($id);
         
-        $repo = $this->getDoctrine()->getRepository('AppBundle:Article')->find($post_id);
-        $repo->setTitle($article->getTitle());
-        $repo->setContent($article->getContent());
-        
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($repo);
-        $em->flush();
+        if($article){
+            $repo->setTitle($article->getTitle());
+            $repo->setContent($article->getContent());
 
-        return $repo;
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($repo);
+            $em->flush();
+        }
+        
+        $response = new Response('modification effectuée',Response::HTTP_ACCEPTED);
+        return $response;
     }
 
 
