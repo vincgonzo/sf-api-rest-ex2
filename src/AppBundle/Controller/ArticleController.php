@@ -3,6 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Article;
+use AppBundle\Repository\ArticleRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use AppBundle\Exception\ResourceValidationException;
 use AppBundle\Representation\Articles;
 use FOS\RestBundle\Controller\Annotations as Rest;
@@ -14,6 +16,11 @@ use Symfony\Component\Validator\ConstraintViolationList;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
+/**
+ * ArticleController
+ * 
+ * @Rest\Prefix("/api")
+ */
 class ArticleController extends FOSRestController
 {
     /**
@@ -94,26 +101,33 @@ class ArticleController extends FOSRestController
         return $repo;
     }
 
+
     /**
-     * @Rest\Post(
-     *     "/article/delete/{post_id}",
+     * @Rest\Delete(
+     *     "/article/{id}/delete/",
      *     name = "app_article_delete",
-     *     requirements={"post_id" = "\d+"}
+     *     requirements={"id" = "\d+"}
      * )
-     * @ParamConverter("article", converter="fos_rest.request_body")
      * @Rest\View(statusCode=201)
      */
     // This particular route would not be accessible without auth process
-    public function deleteAction($post_id, Article $article)
+    public function deleteAction(int $id)
     {        
-        $repo = $this->getDoctrine()->getRepository('AppBundle:Article')->find($post_id);
+        $article = $this->getDoctrine()->getRepository('AppBundle:Article')->find($id);
+
+        if (!$article) {
+            $message = 'There is no post with this id in database.';
+            throw new ResourceValidationException($message);
+        }
 
         $em = $this->getDoctrine()->getManager();
-        $em->remove($repo);
+        $em->remove($article);
         $em->flush();
-
-        return;
+    
+        $response = new Response('Suppression effectuée', Response::HTTP_ACCEPTED);
+        return $response;
     }
+    
 
     /**
      * @Rest\Post("/article")
