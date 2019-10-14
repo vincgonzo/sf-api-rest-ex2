@@ -7,12 +7,42 @@ use JMS\Serializer\Annotation as Serializer;
 use JMS\Serializer\Annotation\ExclusionPolicy;
 use JMS\Serializer\Annotation\Expose;
 use Symfony\Component\Validator\Constraints as Assert;
+use Hateoas\Configuration\Annotation as Hateoas;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ArticleRepository")
  * @ORM\Table()
  *
  * @ExclusionPolicy("all")
+ * 
+ * @Hateoas\Relation(
+ *      "self",
+ *      href = @Hateoas\Route(
+ *          "app_article_show",
+ *          parameters = { "id" = "expr(object.getId())" },
+ *          absolute = true
+ *      )
+ * )
+ * @Hateoas\Relation(
+ *      "update",
+ *      href = @Hateoas\Route(
+ *          "app_article_update",
+ *          parameters = { "id" = "expr(object.getId())" },
+ *          absolute = true
+ *      )
+ * )
+ * @Hateoas\Relation(
+ *      "delete",
+ *      href = @Hateoas\Route(
+ *          "app_article_delete",
+ *          parameters = { "id" = "expr(object.getId())" },
+ *          absolute = true
+ *      )
+ * )
+ * @Hateoas\Relation(
+ *     "author",
+ *     embedded = @Hateoas\Embedded("expr(object.getAuthor())")
+ * )
  *
  */
 class Article
@@ -40,7 +70,6 @@ class Article
     private $content;
 
     /**
-     * @Expose
      * @ORM\ManyToOne(targetEntity="Author", cascade={"all"}, fetch="EAGER")
      */
     private $author;
